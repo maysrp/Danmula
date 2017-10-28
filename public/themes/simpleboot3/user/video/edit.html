@@ -17,9 +17,77 @@
             </div>
             <div class="col-md-9">
                 
+                <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3>
+                                {$info['name']}
+                            </h3>
+                            <h4>
+                                <if condition=" $info['checked'] gt 1 " >
+                                    <span class="label label-success">通过审核:{:date('Y/m/d H:i',$info['checked'])}</span>
+                                    
+                                <elseif condition="$info['checked'] eq 1"/>
+                                    <span class="label label-danger">未通过审核</span>
+                                <else />
+                                    <span class="label label-primary">未审核</span>
+                                </if>
+                            </h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="container">
+                                <video src='{$info['video']}'  controls="controls" width="70%"/>
+                            </div>
+                            
+                                    <!-- <blockquote>
+                                        <p>描述</p>
+                                    </blockquote> -->
+                            <p class='text-muted'>上传日期:{:date('Y/m/d H:i',$info['ctime'])} | 观看次数:{$info['watch']} |收藏数:{$info['harvest']} | <span class="glyphicon glyphicon-thumbs-up text-success"></span>:{$info['good']} | <span class="glyphicon glyphicon-thumbs-down text-danger"></span>:{$info['bad']}</p>
+                            <form action="{:url('video/edit_do')}" method="post">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">        
+                                            视频名称
+                                        </div>
+                                        <input type="number" name='vid' value="{$info['vid']}" class="hide">
+                                        <input type='text' name='name' class="form-control up_input up_name" value="{$info['name']}"> 
+                                    </div>
+                                </div>
+                                <h4><b>描述:</b></h4>
+                                <div class="form-group">
+                                    <textarea class="form-control" name="description">{$info['description']}</textarea>
+                                </div>
+                                <!-- <p><a href="{:url('video/edit',['vid'=>$info['vid']])}" class="btn btn-warning">编辑</a></p> -->
+                                
+                                <div class="row" rem="照片修改">
+
+                                </div>
+                                <button class="hide update"></button>
+                            </form>
+                            <div class="container text-muted">
+                                <h4 >注意事项:</h4>
+                                <ol >
+                                    <li>修改过的视频需要重新审核.</li>
+                                    <li>无法修改视频内容.</li>
+                                    <li>请遵守当地的法律.</li>
+                                    
+                                </ol>
+                            </div>
+                        </div>
+                        <div class="panel-footer text-right">
+                            <button class="btn btn-warning" onclick="reset({$info['vid']})">取消</button>
+                            <button class="btn btn-success" onclick="update()">提交</button>
+                        </div>
+                    </div>
                 
                 <!-- 这里填写内容	 -->
-				
+				<script>
+                    function reset(){
+                        window.location.href='{:url('video/index',['vid'=>$info['vid']])}';
+                    }
+                    function update(){
+                        $(".update").click();
+                    }
+                </script>
 
 			
             </div>

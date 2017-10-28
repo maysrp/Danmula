@@ -144,10 +144,31 @@ class VideoController extends UserBaseController
     
             $this->assign($user);
         	$this->assign('info',$info);
-        	return $this->fetch('play');
+        	return $this->fetch();
         }else{
             $this->assign($user); 
         	return $this->fetch('error');
         }
+    }
+    public function edit_do(){
+        $post=$this->request->post();
+        $user = cmf_get_current_user();
+        $Video=new VideoModel();
+        if($Video->my_vid($post['vid'],$user['id'])){
+            $update['vid']=$post['vid'];
+            $update['utime']=time();
+            $update['name']=$post['name'];
+            $update['description']=$post['description'];
+            $update['checked']=0;
+            if($Video->update($update)){
+                $this->redirect(url('video/index',['vid'=>$post['vid']]));
+            }else{
+                $this->error('修改失败');
+            }
+
+        }else{
+            return $this->fetch('error');
+        }
+
     }
 }
