@@ -1,6 +1,54 @@
-<form action="{:url('user/video/upload_video')}" enctype="multipart/form-data" method="post">
-<input type="file" name="video" /> <br>
-<input type="text" name="name">
-<textarea name="description"></textarea>
-<input type="submit" value="上传" /> 
-</form> 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{$user_login} - 视频上传</title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content="">
+    <include file="public@head"/>
+</head>
+
+<body class="body-white" id="top">
+<include file="public@nav"/>
+
+<div class="container tc-main">
+        <div class="row">
+            <div class="col-md-3">
+                <include file="public@usernav"/>
+            </div>
+            <div class="col-md-9">
+
+                <form action="{:url('user/video/upload_video')}" enctype="multipart/form-data" method="post">
+                <input type="file" name="video" /> <br>
+                <input type="text" name="name">
+                <textarea name="description"></textarea>
+                <input type="submit" value="上传" /> 
+                </form> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+            </div>
+        </div>
+        <include file="public@footer"/>
+</div>
+<include file="public@scripts"/>
+</body>
+</html>

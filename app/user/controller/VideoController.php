@@ -27,6 +27,8 @@ use cmf\controller\HomeBaseController;
 class VideoController extends HomeBaseController
 {
     public function up_video(){
+        $user = cmf_get_current_user();
+        $this->assign($user);//用于和前台一起判断是否已经登入 :  <title>{$user_login} - 视频上传</title>
         return $this->fetch('upload');
     }
     public function index(){
