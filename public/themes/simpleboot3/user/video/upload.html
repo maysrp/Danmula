@@ -115,7 +115,7 @@
                               xhr:xhrOnProgress(function(e){
                                   var pre=e.loaded/e.total;
                                   $(".up_input").attr('disabled','disabled');
-                                  precent=pre*100;
+                                  precent=Math.floor(pre*10000)/100;
                                   $("#precent").html("<h4>"+precent+"%</h4>");
                                   $("#progress").css('width',precent+"%");
                                   if(precent>40){
