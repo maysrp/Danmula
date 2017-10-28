@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{$user_login} - 视频上传</title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content="">
+    <include file="public@head"/>
+</head>
+
+<body class="body-white" id="top">
+<include file="public@nav"/>
+
+<div class="container tc-main">
+        <div class="row">
+            <div class="col-md-3">
+                <include file="public@usernav"/>
+            </div>
+            <div class="col-md-9">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>我上传的的视频列表</h4>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-hover">
+                            <tr>
+                                <th width='60%'>视频名称</th>
+                                <th width='20%'>上传日期</th>
+                                <th width='10%'>状态</th>
+                                <th width='10%'>操作</th>
+                            </tr>
+                            <volist name='list' id='vo'>
+                                <tr class="vid_{$vo.vid}">
+                                    <td onclick="open_my({$vo.vid})">{$vo.name}</td>
+                                    <td >{:date('Y-m-d',$vo.ctime)}</td>
+                                    <td >
+                                        <if condition=" $vo['checked'] gt 1 " >
+                                            <span class="label label-success" title="{:date('Y/m/d H:i',$info['checked'])}">已审核</span>
+                                            
+                                        <elseif condition="$vo['checked'] eq 1"/>
+                                            <span class="label label-danger">未通过</span>
+                                        <else />
+                                            <span class="label label-primary">未审核</span>
+                                        </if>
+                                    </td>
+                                    <td >
+                                        <a href="{:url('video/index',['vid'=>$vo.vid])}"><span class="glyphicon glyphicon-search text-default" title="查看"></span></a>
+                                        <span class="glyphicon glyphicon-pencil text-success" onclick="edit_my({$vo.vid})"></span>
+                                        <span class="glyphicon glyphicon-trash text-warning" onclick="del_my({$vo.vid})"></span>
+                                    </td>
+                                </tr>
+                            </volist>
+                        </table>
+                        <div class="text-center">
+                            <div class="pagination">{$list->render()}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    function open_my(vid){
+                        window.location.href='{:url('video/index')}?vid='+vid;
+                    }
+                    function edit_my(vid){
+                        window.location.href='{:url('video/edit')}?vid='+vid;
+                    }
+                    function del_my(vid){
+                        var cf=confirm("是否要删除该视频？");
+                        $.ajax({
+                            url:'{:url('video/del')}?vid='+vid,
+                            success:function(data){
+                                if(data.status){
+                                    alert('删除成功!');
+                                    $(".vid_"+vid).remove();
+                                }else{
+                                    alert('删除失败!');
+                                }
+                            }
+                        })
+                        
+                    }
+                </script>
+                   
+            </div>
+        </div>
+        <include file="public@footer"/>
+</div>
+<include file="public@scripts"/>
+</body>
+</html>

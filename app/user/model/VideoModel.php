@@ -10,6 +10,15 @@ class VideoModel extends Model{
 		$where['uid']=$uid;
 		return $this->where($where)->select();
 	}
+	public function del_my($vid,$uid){
+		if($this->my_vid($vid,$uid)){
+			$update['vid']=$vid;
+			$update['del']=time();
+			return $this->update($update);
+		}else{
+			return false;
+		}
+	}
 	public function player($player){
 		return $this->vid($player);
 

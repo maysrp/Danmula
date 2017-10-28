@@ -35,7 +35,7 @@
 					<div class="panel-body">
 						<div class="container">
 							<div class="row">
-								<video src='{$info['video']}'  controls="controls"/>
+								<video src='{$info['video']}'  controls="controls" width="70%"/>
 							</div>
 							<div class="row">
 									<!-- <blockquote>
@@ -44,6 +44,7 @@
 									<p class='text-muted'>上传日期:{:date('Y/m/d H:i',$info['ctime'])} | 观看次数:{$info['watch']} |收藏数:{$info['harvest']} | <span class="glyphicon glyphicon-thumbs-up text-success"></span>:{$info['good']} | <span class="glyphicon glyphicon-thumbs-down text-danger"></span>:{$info['bad']}</p>
 									<h4><b>描述:</b></h4>
 									<p>{$info['description']}</p>
+									<p><a href="{:url('video/edit',['vid'=>$info['vid']])}" class="btn btn-warning">编辑</a></p>
 							</div>
 							<div class="row" rem="照片修改">
 

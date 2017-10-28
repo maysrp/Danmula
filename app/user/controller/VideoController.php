@@ -97,15 +97,57 @@ class VideoController extends UserBaseController
         $this->assign($user);
         
         $Video=new VideoModel();
-        $info=$Video->my($user['id']);
-        
-        foreach($info as $one){
-            var_dump($one->data);
-            echo "<hr>";    
+        $where['uid']=$user['id'];
+        $where['del']=0;
+        $list=$Video->where($where)->paginate(10);
+        $this->assign('list',$list);
+        return $this->fetch();
+    }
+    public function del(){
+        $user = cmf_get_current_user();
+        $uid=$user['id'];        
+        $vid=$this->request->param('vid',0,'intval');
+        $Video=new VideoModel();
+        if($Video->del_my($vid,$uid)){
+            $re['status']=true;
+        }else{
+            $re['status']=false;
         }
-
-
-
+        return json($re);
+    }
+    public function edit(){
+        $user = cmf_get_current_user();
+        $uid=$user['id'];        
+        $vid=$this->request->param('vid',0,'intval');
         
+        $Video=new VideoModel();
+        $Harvest=new HarvestModel();
+        $Good=new GoodModel();
+        $Watch=new WatchModel();
+        $Photo=new PhotoModel();
+
+        $info=$Video->vid($vid);
+        if($info){
+            if($user['id']!=$info['uid']){
+                $this->assign($user);
+                return $this->fetch('error');
+            }
+        	$rem['xid']=$vid;
+        	$rem['type']='video';
+        	$info['good']=$Good->good_count($rem);
+        	$info['bad']=$Good->bad_count($rem);
+        	$info['harvest']=$Harvest->harvest_count($rem);
+        	$info['watch']=$Watch->watch_count($rem);
+        	$info['photo']=$Photo->photo_get($rem);
+            
+            $info['video']=cmf_get_file_download_url($info['video'],3000);
+    
+            $this->assign($user);
+        	$this->assign('info',$info);
+        	return $this->fetch('play');
+        }else{
+            $this->assign($user); 
+        	return $this->fetch('error');
+        }
     }
 }
