@@ -5,6 +5,11 @@ namespace app\user\model;
 use think\Model;
 
 class VideoModel extends Model{
+	public function my($uid){
+		$where['del']=0;
+		$where['uid']=$uid;
+		return $this->where($where)->select();
+	}
 	public function player($player){
 		return $this->vid($player);
 
@@ -58,7 +63,7 @@ class VideoModel extends Model{
 		$insert['description']=$info['description'];
 		$insert['ctime']=time();
 		$insert['checked']=0;
-		return $this->insert($insert);
+		return $this->insertGetId($insert);
 	}
 
 }

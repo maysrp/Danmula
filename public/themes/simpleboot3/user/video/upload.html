@@ -17,34 +17,137 @@
             </div>
             <div class="col-md-9">
 
-                <form action="{:url('user/video/upload_video')}" enctype="multipart/form-data" method="post">
-                <input type="file" name="video" /> <br>
-                <input type="text" name="name">
-                <textarea name="description"></textarea>
-                <input type="submit" value="上传" /> 
-                </form> 
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3>视频上传</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="up_before">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">        
+                                        视频名称
+                                    </div>
+                                    <input type='text' name='name' class="form-control up_input up_name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control up_input up_description" placeholder="视频描述"></textarea>                                
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="file" id="video" class="hide">
+                                    <input type="text" class="form-control" id="videoname" placeholder="点击上传视频[mp4格式]" >
+                                    <div class="input-group-btn">
+                                        <button id="up" class="btn btn-success" disabled="disabled" >上传</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="up_doing" >
+                            <div class='form-group'>
+                                    <div class="progress" >
+                                        <div id="progress" class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
+                                    </div>
+                                    <div id="precent" class="text-center"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container text-muted">
+                        <h4 >注意事项:</h4>
+                        <ol >
+                            <li>暂时只支持mp4格式的视频.</li>
+                            <li>文件大小在1GB以内.</li>
+                            <li>上传文件需要审核后才能发布.</li>
+                            <li>请遵守当地的法律.</li>
+                            
+                        </ol>
+                    </div>
+                </div>
+               
+                <script type="text/javascript">
+                    var xhrOnProgress=function(fun) {
+                        xhrOnProgress.onprogress = fun; 
+                        return function() {
+                            var xhr = $.ajaxSettings.xhr();
+                            if (typeof xhrOnProgress.onprogress !== 'function')
+                                return xhr;
+                            if (xhrOnProgress.onprogress && xhr.upload) {
+                                xhr.upload.onprogress = xhrOnProgress.onprogress;
+                            }
+                            return xhr;
+                        }
+                    }
+                    $("#videoname").click(function(){
+                        $("#video_upload").text("视频上传");
+                        $("#video").click();
+                        $("#video").val("");
+                        $("#videoname").val("");
+                        $("#videoname").attr("placeholder","点击上传视频[mp4格式]");
+                    })
+                    $("#video").change(function(){
+                        var videoname=$(this).val();
+                        file=this.files[0];
+                        if(file.type!="video/mp4"){
+                            $("#video").val("");
+                            confirm("请选择MP4格式的视频文件上传！");
+                            $("#video").click();
+                            videoname=null;
+                            file=null;
+                        }else{
+                            $("#videoname").val(videoname);
+                            $("#up").removeAttr("disabled");
+                        }
+                    })
+                    $("#up").click(function(){
+                        var fd=new FormData();
+                        var name=$(".up_name").val();
+                        var description=$(".up_description").val();
+                        fd.append("video",file);
+                        fd.append("name",name);
+                        fd.append("description",description);
+                        $.ajax({
+                            url:"{:url('video/upload_video')}",
+                            type:"POST",
+                            data:fd,
+                            processData: false,  // 告诉jQuery不要去处理发送的数据
+                              contentType: false,   // 告诉jQuery不要去设置Content-Type请求头
+                              xhr:xhrOnProgress(function(e){
+                                  var pre=e.loaded/e.total;
+                                  $(".up_input").attr('disabled','disabled');
+                                  precent=pre*100;
+                                  $("#precent").html("<h4>"+precent+"%</h4>");
+                                  $("#progress").css('width',precent+"%");
+                                  if(precent>40){
+                                    $("#progress").addClass(" progress-bar-info");
+                                    $("#up").attr("disabled","disabled");
+                                  }
+                                  if(precent>90){
+                                    $("#progress").removeClass(" progress-bar-info");
+                                    $("#progress").addClass(" progress-bar-success");
+                                 }
+                              }),
+                            success:function(data){
+                                if(data.status){
+                                   alert('上传成功等待审核中');
+                                   window.location.href='{:url('video/index')}?vid='+data.con;
+                                    // $("input[name='video_url']").val(data.con);
+                                    // $("#videoname").val("");
+                                    // $("#videoname").attr("placeholder","视频上传成功");
+                                    // $("#video_upload").text("视频上传成功");
+                                    // $("#video_upload").addClass("text-success");
+                                    // $("#up").attr("disabled","disabled");
+                                }else{
+                                    // alert(data.con);
+                                    alert('上传失败');
+                                    history.go(0);
+                                }
+                            }
+                        })
+                    })
+                </script>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                
             </div>
         </div>
         <include file="public@footer"/>

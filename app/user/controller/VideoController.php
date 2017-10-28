@@ -16,7 +16,7 @@ use app\user\model\HarvestModel;
 use app\user\model\WatchModel;
 use app\user\model\PhotoModel;
 
-use cmf\controller\HomeBaseController;
+use cmf\controller\UserBaseController;
 
 
 /**
@@ -24,16 +24,46 @@ use cmf\controller\HomeBaseController;
  * Class Ueditor
  * @package app\asset\controller
  */
-class VideoController extends HomeBaseController
+class VideoController extends UserBaseController
 {
     public function up_video(){
         $user = cmf_get_current_user();
-        $this->assign($user);//用于和前台一起判断是否已经登入 :  <title>{$user_login} - 视频上传</title>
+        $this->assign($user);
         return $this->fetch('upload');
     }
     public function index(){
+        $user = cmf_get_current_user();
         $vid = $this->request->param('vid', 1, 'intval');
-        $this->redirect('portal/Video/index',['vid'=>$vid]);
+        //$this->redirect('portal/Video/index',['vid'=>$vid]);
+        $Video=new VideoModel();
+        $Harvest=new HarvestModel();
+        $Good=new GoodModel();
+        $Watch=new WatchModel();
+        $Photo=new PhotoModel();
+
+        $info=$Video->vid($vid);
+        if($info){
+            if($user['id']!=$info['uid']){
+                $this->assign($user);
+                return $this->fetch('error');
+            }
+        	$rem['xid']=$vid;
+        	$rem['type']='video';
+        	$info['good']=$Good->good_count($rem);
+        	$info['bad']=$Good->bad_count($rem);
+        	$info['harvest']=$Harvest->harvest_count($rem);
+        	$info['watch']=$Watch->watch_count($rem);
+        	$info['photo']=$Photo->photo_get($rem);
+            
+            $info['video']=cmf_get_file_download_url($info['video'],3000);
+    
+            $this->assign($user);
+        	$this->assign('info',$info);
+        	return $this->fetch('play');
+        }else{
+            $this->assign($user); 
+        	return $this->fetch('error');
+        }
     }
     public function upload_video(){
         $file=$this->request->file('video');
@@ -44,15 +74,38 @@ class VideoController extends HomeBaseController
                 $info['name']=$this->request->post('name','unknow');
                 $info['description']=$this->request->post('description','unknow');
                 $info['uid']=cmf_get_current_user_id();
-                var_dump($info);
+                
                 
                 $Video=new VideoModel();
 
-                $xinfo=$Video->upload($info);
-                var_dump($xinfo);
-                
-        
+                if($xinfo=$Video->upload($info)){
+                    $re['status']=1;
+                    $re['con']=$xinfo;
+                }else{
+                    $re['status']=0;
+                }
+             }else{
+                $re['status']=0;
              }
+        }else{
+            $re['status']=0;
         }
+        return json($re);
+    }
+    public function my(){
+        $user = cmf_get_current_user();
+        $this->assign($user);
+        
+        $Video=new VideoModel();
+        $info=$Video->my($user['id']);
+        
+        foreach($info as $one){
+            var_dump($one->data);
+            echo "<hr>";    
+        }
+
+
+
+        
     }
 }

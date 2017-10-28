@@ -1,14 +1,64 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
-	<script src="https://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
-	<script src="https://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <title>{$user_login} - 我的视频:{$info['name']}</title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content="">
+    <include file="public@head"/>
 </head>
-<body>
-	<video src="{$info['video']}"></video>
+
+<body class="body-white" id="top">
+<include file="public@nav"/>
+
+<div class="container tc-main">
+        <div class="row">
+            <div class="col-md-3">
+                <include file="public@usernav"/>
+            </div>
+            <div class="col-md-9">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3>
+							{$info['name']}
+						</h3>
+						<h4>
+							<if condition=" $info['checked'] gt 1 " >
+								<span class="label label-success">通过审核:{:date('Y/m/d H:i',$info['checked'])}</span>
+								
+							<elseif condition="$info['checked'] eq 1"/>
+								<span class="label label-danger">未通过审核</span>
+							<else />
+								<span class="label label-primary">未审核</span>
+							</if>
+						</h4>
+					</div>
+					<div class="panel-body">
+						<div class="container">
+							<div class="row">
+								<video src='{$info['video']}'  controls="controls"/>
+							</div>
+							<div class="row">
+									<!-- <blockquote>
+										<p>描述</p>
+									</blockquote> -->
+									<p class='text-muted'>上传日期:{:date('Y/m/d H:i',$info['ctime'])} | 观看次数:{$info['watch']} |收藏数:{$info['harvest']} | <span class="glyphicon glyphicon-thumbs-up text-success"></span>:{$info['good']} | <span class="glyphicon glyphicon-thumbs-down text-danger"></span>:{$info['bad']}</p>
+									<h4><b>描述:</b></h4>
+									<p>{$info['description']}</p>
+							</div>
+							<div class="row" rem="照片修改">
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+				
+
+			
+            </div>
+        </div>
+        <include file="public@footer"/>
+</div>
+<include file="public@scripts"/>
 </body>
 </html>
