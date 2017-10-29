@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{$user_login} - 视频上传</title>
+    <title>{$user_login} - 我的弹幕</title>
     <meta name="keywords" content=""/>
     <meta name="description" content="">
     <include file="public@head"/>
@@ -18,34 +18,27 @@
             <div class="col-md-9">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h4>我上传的的视频列表</h4>
+                        <h4>我的弹幕</h4>
                     </div>
                     <div class="panel-body">
                         <table class="table table-hover">
                             <tr>
-                                <th width='60%'>视频名称</th>
-                                <th width='20%'>上传日期</th>
-                                <th width='10%'>状态</th>
+                                <th width='30%'>视频名称</th>
+                                <th width='20%'>位置</th>
+                                <th width='40%'>内容</th>
                                 <th width='10%'>操作</th>
                             </tr>
                             <volist name='list' id='vo'>
-                                <tr class="vid_{$vo.vid}">
-                                    <td onclick="open_my({$vo.vid})"><span class='glyphicon glyphicon-film'></span> {$vo.name}</td>
-                                    <td >{:date('Y-m-d',$vo.ctime)}</td>
+                                <tr class="vid_{$vo.player}" title="发布时间{:date('Y-m-d',$vo.atime)}">
+                                    <td ><span class='glyphicon glyphicon-film'></span> {$vo.player|vid_name}</td>
+                                    <td >{$vo.time}s</td>
                                     <td >
-                                        <if condition=" $vo['checked'] gt 1 " >
-                                            <span class="label label-success" title="{:date('Y/m/d H:i',$vo['checked'])}">已审核</span>
-                                            
-                                        <elseif condition="$vo['checked'] eq 1"/>
-                                            <span class="label label-danger">未通过</span>
-                                        <else />
-                                            <span class="label label-primary">未审核</span>
-                                        </if>
+                                       {$vo.text}
                                     </td>
                                     <td >
-                                        <a href="{:url('video/index',['vid'=>$vo.vid])}"><span class="glyphicon glyphicon-search text-default" title="查看"></span></a>
-                                        <span class="glyphicon glyphicon-pencil text-success" onclick="edit_my({$vo.vid})"></span>
-                                        <span class="glyphicon glyphicon-trash text-warning" onclick="del_my({$vo.vid})"></span>
+                                        <a href="{:url('video/index',['vid'=>$vo.player])}"><span class="glyphicon glyphicon-search text-default" title="查看"></span></a>
+                                        <span class="glyphicon glyphicon-pencil text-success" onclick="edit_my({$vo.player})"></span>
+                                        <span class="glyphicon glyphicon-trash text-warning" onclick="del_my({$vo.player})"></span>
                                     </td>
                                 </tr>
                             </volist>

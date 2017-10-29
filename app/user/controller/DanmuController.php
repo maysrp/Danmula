@@ -8,10 +8,10 @@
 // +----------------------------------------------------------------------
 // | Author: 老猫 <thinkcmf@126.com>
 // +----------------------------------------------------------------------
-namespace app\portal\controller;
-use cmf\controller\HomeBaseController;
+namespace app\user\controller;
+use cmf\controller\UserBaseController;
 use app\user\model\DanmuModel;
-class DanmuController extends HomeBaseController
+class DanmuController extends UserBaseController
 {
     public function index(){
         header("access-control-allow-origin:*");
@@ -41,7 +41,7 @@ class DanmuController extends HomeBaseController
         $re=isset($re)?$re:[];
         echo json_encode($re);
     }
-        
+    
     protected function token($info){//验证
         if(isset($info['player'])){
             $pl=strlen($info['player']);
@@ -50,5 +50,15 @@ class DanmuController extends HomeBaseController
             }
         }
        
+    }
+    public function my(){
+        $user = cmf_get_current_user();
+        $this->assign($user);
+        $Danmu=new DanmuModel();
+        $where['uid']=$user['id'];
+        $where['del']=0;
+        $list=$Danmu->where($where)->paginate(10);
+        $this->assign('list',$list);
+        return $this->fetch();
     }
 }
