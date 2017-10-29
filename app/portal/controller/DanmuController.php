@@ -22,24 +22,23 @@ class DanmuController extends HomeBaseController
         $info['ip']=get_client_ip(0,true);
         $Danmu=new DanmuModel();
         if($id){
-            $re=D('Danmu')->get_danmu($id,$max);
+            $re=$Danmu->get_danmu($id,$max);
         }else{
             if($this->token($info)){
                 $user=cmf_get_current_user();
                 if($user){
                     $info['uid']=$user['id'];//??
                     $info['author']=$user['user_login'];
-                    $re=D('Danmu')->send_danmu($info);
+                    $re['code']=$Danmu->send_danmu($info);
                 }else{//可以删除 用于未登入用户发弹幕
-                    $info['uid']=$user['id'];//??
-                    $info['author']=$user['user_login'];
-                    $re=D('Danmu')->send_danmu($info);
+                    $info['uid']=0;//??
+                    $info['author']='unknow';
+                    $re['code']=$Danmu->send_danmu($info);
                 }
             }
         }
         //header('Content-type:text/json');
-        $re=isset($re)?$re:[];
-        echo json_encode($re);
+        return json($re);
     }
         
     protected function token($info){//验证

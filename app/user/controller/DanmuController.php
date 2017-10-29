@@ -61,4 +61,19 @@ class DanmuController extends UserBaseController
         $this->assign('list',$list);
         return $this->fetch();
     }
+    public function del(){
+        $id=$this->request->param('id','0','intval');
+        $user = cmf_get_current_user();
+        $Danmu=new DanmuModel();
+        $where['uid']=$user['id'];
+        $where['del']=0;
+        $where['_id']=$id;
+        $update['del']=time();
+        if($Danmu->where($where)->update($update)){
+            $re['status']=true;
+        }else{
+            $re['status']=false;
+        }
+        return json($re);
+    }
 }

@@ -1,48 +1,113 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
-	<script src="https://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
-	<script src="https://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <title>视频 {$info['name']}</title>
+    <meta name="keywords" content="{$site_info.site_seo_keywords|default=''}"/>
+    <meta name="description" content="{$site_info.site_seo_description|default=''}">
+    <include file="public@head"/>
+	<link href="__TMPL__/public/assets/css/slippry/slippry.css" rel="stylesheet">
+	<link href="https://cdn.bootcss.com/dplayer/1.16.0/DPlayer.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/dplayer/1.16.0/DPlayer.min.js"></script>
+	<style>
+        .caption-wraper {
+            position: absolute;
+            left: 50%;
+            bottom: 2em;
+        }
+
+        .caption-wraper .caption {
+            position: relative;
+            left: -50%;
+            background-color: rgba(0, 0, 0, 0.54);
+            padding: 0.4em 1em;
+            color: #fff;
+            -webkit-border-radius: 1.2em;
+            -moz-border-radius: 1.2em;
+            -ms-border-radius: 1.2em;
+            -o-border-radius: 1.2em;
+            border-radius: 1.2em;
+        }
+
+        .tc-gridbox {
+            margin: 0;
+        }
+
+        @media (max-width: 767px) {
+            .caption-wraper {
+                left: 0;
+                bottom: 0.4em;
+            }
+
+            .caption-wraper .caption {
+                left: 0;
+                padding: 0.2em 0.4em;
+                font-size: 0.92em;
+                -webkit-border-radius: 0;
+                -moz-border-radius: 0;
+                -ms-border-radius: 0;
+                -o-border-radius: 0;
+                border-radius: 0;
+            }
+        }
+
+    </style>
+    <hook name="before_head_end"/>
 </head>
-<body>
+<body class="body-white">
+	<include file="public@nav"/>
+	<div class="container tc-main">
+		<div class="row">
+			<div class="col-md-9">
+				<!-- 这里 -->
+
+			
+				<div class="row">
+					<h3>{$info.name} <small><span class="glyphicon glyphicon-signal"></span> {$info.watch} </small></a></h3>
+					<p> 发布于 <span class="glyphicon glyphicon-time"></span> {:date('Y-m-d H:i',$info.ctime)}</p>
+					<div id="vid" class="hide">{$info.vid}</div>
+					<div id="player1" class="dplayer"></div>
+					<script type="text/javascript">
+						var vid=$("#vid").text();
+						var value="{$info['video']}";//需要改变
+								dp = new DPlayer({
+									element: document.getElementById('player1'),                       // Optional, player element
+									autoplay: false,                                                   // Optional, autoplay video, not supported by mobile browsers
+									theme: '#FADFA3',                                                  // Optional, theme color, default: #b7daff
+									loop: true,                                                        // Optional, loop play music, default: true
+									lang: 'zh',                                                        // Optional, language, `zh` for Chinese, `en` for English, default: Navigator language
+									screenshot: true,                                                  // Optional, enable screenshot function, default: false, NOTICE: if set it to true, video and video poster must enable Cross-Origin
+									hotkey: true,                                                      // Optional, binding hot key, including left right and Space, default: true
+									preload: 'auto',                                                   // Optional, the way to load music, can be 'none' 'metadata' 'auto', default: 'auto'
+									video: {                                                           // Required, video info
+										url: value,                                         // Required, video url
+										pic: '{$info.photo}'                                          // Optional, music picture
+									},
+									danmaku: {                                                         // Optional, showing danmaku, ignore this option to hide danmaku
+										id: vid,                                        // Required, danmaku id, NOTICE: it must be unique, can not use these in your new player: `https://api.prprpr.me/dplayer/list`
+										api: '{:url('danmu/index')}',                             // Required, danmaku api
+										token: '44',                                            // Optional, danmaku token for api
+										maximum: 1000,                                                 // Optional, maximum quantity of danmaku IP base64
+									}
+								});
+					</script>
+
+				</div>	
+
+
+			
 
 
 
-		<navigation nav-id="1" root="ul" id="main-navigation" class="nav navbar-nav navbar-nav-custom">
-				<navigationMenu root="li" class="menu-item menu-item-level-{$level}">
-					<a href="{$menu.href|default=''}" target="{$menu.target|default=''}">{$menu.name|default=''}</a>
-				</navigationMenu>
-				<navigationFolder root="li" class="dropdown dropdown-custom dropdown-custom-level-{$level}" dropdown="ul"
-								  dropdown-class="dropdown-menu dropdown-menu-level-{$level}">
-					<a href="#" class="dropdown-toggle dropdown-toggle-{$level}" data-toggle="dropdown">
-						{$menu.name|default=''}<span class="caret"></span>
-					</a>
-				</navigationFolder>
-			</navigation>
+			</div>
+			<div class="col-md-3">
+				<!-- 侧边导航 -->
+				<include file="public@webinfo"/>
 
+			</div>
 
-
-	<video src="{$info['video']}" controls="controls"></video>
-
-
-	<ul id="main-navigation" class="nav navbar-nav navbar-nav-custom">
-			<navigation nav-id="1" root="">
-				<navigationMenu root="li" class="menu-item menu-item-level-{$level}">
-					<a href="{$menu.href|default=''}" target="{$menu.target|default=''}">{$menu.name|default=''}</a>
-				</navigationMenu>
-				<navigationFolder root="li" class="dropdown dropdown-custom dropdown-custom-level-{$level}" dropdown="ul"
-								  dropdown-class="dropdown-menu dropdown-menu-level-{$level}">
-					<a href="#" class="dropdown-toggle dropdown-toggle-{$level}" data-toggle="dropdown">
-						{$menu.name|default=''}<span class="caret"></span>
-					</a>
-				</navigationFolder>
-			</navigation>
-		</ul>
-
-		
+		</div>
+		<include file="public@footer"/>
+	</div>	
+	<include file="public@scripts"/>
 </body>
 </html>

@@ -24,21 +24,20 @@
                         <table class="table table-hover">
                             <tr>
                                 <th width='30%'>视频名称</th>
-                                <th width='20%'>位置</th>
-                                <th width='40%'>内容</th>
+                                <th width='20%'>弹幕位置</th>
+                                <th width='40%'>弹幕内容</th>
                                 <th width='10%'>操作</th>
                             </tr>
                             <volist name='list' id='vo'>
-                                <tr class="vid_{$vo.player}" title="发布时间{:date('Y-m-d',$vo.atime)}">
-                                    <td ><span class='glyphicon glyphicon-film'></span> {$vo.player|vid_name}</td>
+                                <tr class="id_{$vo._id}" title="发布时间{:date('Y-m-d',$vo.atime)}">
+                                    <td onclick="open_my({$vo.player})"><span class='glyphicon glyphicon-film'></span> {$vo.player|vid_name}</td>
                                     <td >{$vo.time}s</td>
                                     <td >
                                        {$vo.text}
                                     </td>
                                     <td >
-                                        <a href="{:url('video/index',['vid'=>$vo.player])}"><span class="glyphicon glyphicon-search text-default" title="查看"></span></a>
-                                        <span class="glyphicon glyphicon-pencil text-success" onclick="edit_my({$vo.player})"></span>
-                                        <span class="glyphicon glyphicon-trash text-warning" onclick="del_my({$vo.player})"></span>
+                                        <a href="{:url('portal/video/index',['vid'=>$vo.player])}"><span class="glyphicon glyphicon-search text-default" title="查看该视频"></span></a>
+                                        <span class="glyphicon glyphicon-trash text-warning" onclick="del_my({$vo._id})"></span>
                                     </td>
                                 </tr>
                             </volist>
@@ -51,25 +50,23 @@
 
                 <script>
                     function open_my(vid){
-                        window.location.href='{:url('video/index')}?vid='+vid;
+                        window.location.href='{:url('portal/video/index')}?vid='+vid;
                     }
-                    function edit_my(vid){
-                        window.location.href='{:url('video/edit')}?vid='+vid;
-                    }
-                    function del_my(vid){
-                        var cf=confirm("是否要删除该视频？");
-                        $.ajax({
-                            url:'{:url('video/del')}?vid='+vid,
-                            success:function(data){
-                                if(data.status){
-                                    alert('删除成功!');
-                                    $(".vid_"+vid).remove();
-                                }else{
-                                    alert('删除失败!');
+                    function del_my(id){
+                        var cf=confirm("是否要删除该弹幕？");
+                        if(cf){
+                            $.ajax({
+                                url:'{:url('danmu/del')}?id='+id,
+                                success:function(data){
+                                    if(data.status){
+                                        alert('删除成功!');
+                                        $(".id_"+id).remove();
+                                    }else{
+                                        alert('删除失败!');
+                                    }
                                 }
-                            }
-                        })
-                        
+                            })     
+                        }
                     }
                 </script>
                    

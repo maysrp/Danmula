@@ -43,6 +43,7 @@ class VideoController extends HomeBaseController
         	$info['photo']=$Photo->photo_get($rem);
             
             $info['video']=cmf_get_file_download_url($info['video'],3000);
+            $info['video']=str_replace('\\','\/',$info['video']);
     
 
         	$this->assign('info',$info);
