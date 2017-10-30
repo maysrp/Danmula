@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{$user_login} - 我的收藏</title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content="">
+    <include file="public@head"/>
+</head>
+
+<body class="body-white" id="top">
+<include file="public@nav"/>
+
+<div class="container tc-main">
+        <div class="row">
+            <div class="col-md-3">
+                <include file="public@usernav"/>
+            </div>
+            <div class="col-md-9">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>我的收藏</h4>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-hover">
+                            <tr>
+                                <th width='70%'>视频名称</th>
+                                <th width='20%'>收藏日期</th>
+                                <th width='10%'>操作</th>
+                            </tr>
+                            <volist name='list' id='vo'>
+                                <tr class="id_{$vo.hid}" >
+                                    <td><span class='{:hid_ico($vo.hid)}'></span> <a href='{:hid_url($vo.hid)}'>{$vo.hid|hid_name}</a></td>
+                                    
+                                    <td >
+                                            {:date('Y-m-d',$vo.time)}
+                                    </td>
+                                    <td >
+                                        <span class="glyphicon glyphicon-trash text-warning" onclick="del_my({$vo.hid})"></span>
+                                    </td>
+                                </tr>
+                            </volist>
+                        </table>
+                        <div class="text-center">
+                            <div class="pagination">{$list->render()}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    function del_my(hid){
+                        var cf=confirm("是否要删除该收藏？");
+                        if(cf){
+                            $.ajax({
+								url:'{:url('user/harvest/harvest_del')}?hid='+hid,
+								success:function(data){
+									if(data.status){
+										$(".id_"+hid).remove();
+									}else{
+                                        alert(data.con);
+                                    }
+								}
+							}) 
+                        }
+                    }
+                </script>
+                   
+            </div>
+        </div>
+        <include file="public@footer"/>
+</div>
+<include file="public@scripts"/>
+</body>
+</html>

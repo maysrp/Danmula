@@ -93,7 +93,37 @@
 
 				</div>	
 
-
+				<div class="row">
+					
+					<h3><span class='{:is_harvest($info['vid'],'video')} harvest_color' onclick='harvest_click()'><span class="glyphicon glyphicon-heart" ></span></span> <small class="harvest_count">{$info['harvest']}</small></h3>
+				
+					<script>
+						function harvest_click(){
+							$.ajax({
+								url:'{:url('user/harvest/harvest_add',['xid'=>$info['vid'],'type'=>'video'])}',
+								success:function(data){
+									if(data.status==1){
+										$(".harvest_color").removeClass('text-success');
+										$(".harvest_color").addClass('text-danger');
+										var num=$(".harvest_count").html();
+										num=parseInt(num);
+										$(".harvest_count").html(num+1);
+										alert('添加收藏成功');
+									}else if(data.status==2){
+										$(".harvest_color").removeClass('text-danger');
+										$(".harvest_color").addClass('text-success');
+										var num=$(".harvest_count").html();
+										num=parseInt(num);
+										$(".harvest_count").html(num-1);
+										alert(data.con);
+									}else{
+										alert(data.con);
+									}
+								}
+							})
+						}
+					</script>
+				</div>
 			
 
 
