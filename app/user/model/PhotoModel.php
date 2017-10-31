@@ -35,7 +35,8 @@ class PhotoModel extends Model{
 		$where['del']=0;
 		$info=$this->where($where)->find();
 		if($info){
-			return $info->data;
+			$url=cmf_get_file_download_url($info['url'],3000);
+			return str_replace("\\","\/",$url);
 		}else{
 			return false;
 		}

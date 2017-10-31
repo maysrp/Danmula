@@ -72,7 +72,103 @@
                                     
                                 </ol>
                             </div>
+                            
+                            <hr/>
+                            
+                            <h4>图片修改</h4>
+                           
+                            
+                                <img src='{$info['photo']}' class="img-rounded" id="pre_image" style="max-width:400px;margin:10px;"/>
+                           
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="file" id="image" class="hide">
+                                    <input type="text" class="form-control" id="imagename" placeholder="点击上传封面照片" >
+                                    <div class="input-group-btn">
+                                        <button id="up" class="btn btn-primary"  disabled='disabled'>上传封面</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <script type="text/javascript">
+                                $("#imagename").click(function(){
+                                    $("#image").click();
+                                })
+                                $("#image").change(function(){
+                                    $("#imagename").val($(this).val());
+                                    file=this.files[0];
+                                    if(file.type=='image/jpg'||file.type=='image/gif'||file.type=='image/png'||file.type=='image/jpeg'){
+                                        if(file.size<5241024){
+                                            $("#up").removeAttr('disabled');
+                                            var fr=new FileReader();
+                                            fr.readAsDataURL(file); 
+                                            fr.onload=function(e){ 
+                                                var result=document.getElementById("result"); 
+                                                $("#pre_image").attr('src',this.result);
+                                                $("#pre_image").css('opacity',0.6);
+                                            }
+                                        }else{
+                                            $("#imagename").val("");
+                                            $(this).val("");
+                                            alert("图片不应大于5MB");
+                                            $("#up").attr('disabled','disabled');
+                                        }
+                                    }else{
+                                        $("#imagename").val("");
+                                        $(this).val("");
+                                        alert("请选择图片文件");
+                                        $("#up").attr('disabled','disabled');
+                                    }
+                                })
+                                var xhrOnProgress=function(fun) {
+                                    xhrOnProgress.onprogress = fun; 
+                                    return function() {
+                                        var xhr = $.ajaxSettings.xhr();
+                                        if (typeof xhrOnProgress.onprogress !== 'function')
+                                            return xhr;
+                                        if (xhrOnProgress.onprogress && xhr.upload) {
+                                            xhr.upload.onprogress = xhrOnProgress.onprogress;
+                                        }
+                                        return xhr;
+                                    }
+                                }
+                                $("#up").click(function(){
+                                    var fd=new FormData();
+                                    fd.append('xid','{$info['vid']}');
+                                    fd.append('type','video');
+                                    fd.append('image',file);
+                                    $.ajax({
+                                        url:'{:url('user/photo/upload')}',
+                                        type:'POST',
+                                        data:fd,
+                                        processData:false,
+                                        contentType:false,
+                                        xhr:xhrOnProgress(function(e){
+                                            var opg=0.5+e.loaded/e.total;
+                                            $("#pre_image").css('opacity',opg);
+                                        }),
+                                        success:function(data){
+                                            if(data.status){
+                                                $("#pre_image").css('opactiy',1);
+                                                alert('添加封面完成');
+                                            }else{
+                                                alert('添加封面失败,请更换一张封面图片');
+                                                $("#imagename").val("");
+                                                $("#image").val("");
+                                                alert("请选择图片文件");
+                                                $("#up").attr('disabled','disabled');
+                                            }
+                                        }
+                                    })
+
+                                })
+                            </script>
+                            
+
+
                         </div>
+
+
+
                         <div class="panel-footer text-right">
                             <button class="btn btn-warning" onclick="reset({$info['vid']})">取消</button>
                             <button class="btn btn-success" onclick="update()">提交</button>
