@@ -59,7 +59,7 @@
 
                 <script>
                     function del_my(id){
-                        var cf=confirm("是否要删除该弹幕？");
+                        var cf=confirm("是否要删除该收藏？");
                         if(cf){
                             $.ajax({
                                 url:'{:url('collection/collection_delete')}?cid='+id,
