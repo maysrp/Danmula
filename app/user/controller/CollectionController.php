@@ -38,13 +38,16 @@ class CollectionController extends UserBaseController
         $rem=Db::name('collection')->where($where)->find();
         $info=json_decode($rem['info'],true);
         $one_info=[];
+        $rim['cid']=$cid;
+        $rim['name']=$rem['name'];
         foreach ($info as $xinfo){
             if($ram=is_valid($xinfo)){//只有视频VID
                 $one_info['name']=$ram['name'];
                 $one_info['vid']=$xinfo;
+                $rim['data'][]=$one_info;
             }
         }
-        return json($one_info);
+        return json($rim);
     }
     public function collection_create(){
         $user = cmf_get_current_user();

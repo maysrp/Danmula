@@ -78,7 +78,16 @@
                         $.ajax({
                             url:'{:url('collection/collection')}?cid='+id,
                             success:function(data){
-                                
+                                var x='';
+                                var y='';
+                                for (info in data.data){
+                                    x=x+' '+'<a href=\'{:url('video/index')}?vid='+data.data[info].vid+'\'>'+data.data[info].name+'</a>'; 
+                                    y=y+data.data[info].vid+' ';                                   
+                                }
+                                $(".collection_name").html(data.name+'合集');
+                                $(".collection_info").html(x);
+                                $(".collection_cid").html(y);
+                                $(".show_one").modal('show');
                             }
                         })
                     }
@@ -89,5 +98,37 @@
         <include file="public@footer"/>
 </div>
 <include file="public@scripts"/>
+
+
+
+        <div class="modal fade show_one" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title collection_name"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="collection_info"></div>
+                        <div class="collection_text hide">
+                            <h5>*请填入视频vid,每个vid间隔有一个空格</h5>
+                            <textarea class="form-control collection_cid"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class='btn btn-primary' onclick='show_more()'>修改</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>    
+            function show_more(){
+                $(".collection_text").removeClass('hide');
+            }
+        
+        </script>
+
+
 </body>
 </html>
