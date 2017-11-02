@@ -12,6 +12,7 @@ namespace app\user\controller;
 
 use cmf\controller\UserBaseController;
 use app\user\model\CollectionModel;
+use app\user\model\VideoModel;
 use think\Db;
 
 /**
@@ -36,9 +37,11 @@ class CollectionController extends UserBaseController
         $where['cid']=$cid;
         $rem=Db::name('collection')->where($where)->find();
         $info=json_decode($rem['info'],true);
+        $one_info=[];
         foreach ($info as $xinfo){
-            if($ram=valid($xinfo)){//只有视频VID
-                $one_info[]=$ram;
+            if($ram=is_valid($xinfo)){//只有视频VID
+                $one_info['name']=$ram['name'];
+                $one_info['vid']=$xinfo;
             }
         }
         return json($one_info);
@@ -91,10 +94,17 @@ class CollectionController extends UserBaseController
         $where['uid']=$user['id'];
         if($info){
             $tag=preg_replace('/\s+/', ' ', $info);
-            $tag_array=explode(" ", $tag);
-            $update['info']=json_encode($tag_array);
-            $tga=array_filter($tag_array);
-            $update['count']=count($tga);
+            $ram=explode(" ", $tag);
+            $Video=new VideoModel();
+            $rem=[];
+            foreach($ram as $one){
+                if($Video->my_vid($one,$user['id'])){
+                    $rem[]=$one;
+                }
+            }
+            $rem=array_unique($rem);
+            $update['count']=count($rem);
+            $update['info']=json_encode($rem);//应该为本人所有
         }
         if($name=$this->request->param('name')){
             $update['name']=$name;

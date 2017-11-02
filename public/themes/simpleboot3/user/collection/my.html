@@ -43,7 +43,7 @@
                                         </if>
                                     </td>
                                     <td >
-                                       <span class="glyphicon glyphicon-eye-open"></span> | <span class='glyphicon glyphicon-pencil text-primary'></span> | <span class="glyphicon glyphicon-trash text-danger" onclick='del_my({$vo.cid})'></span>
+                                       <span class="glyphicon glyphicon-eye-open" onclick='open_collection({$vo.cid})'></span> | <span class='glyphicon glyphicon-pencil text-primary'></span> | <span class="glyphicon glyphicon-trash text-danger" onclick='del_my({$vo.cid})'></span>
                                     </td>
                                 </tr>
                             </volist>
@@ -73,6 +73,14 @@
                                 }
                             })     
                         }
+                    }
+                    function open_collection(id){
+                        $.ajax({
+                            url:'{:url('collection/collection')}?cid='+id,
+                            success:function(data){
+                                
+                            }
+                        })
                     }
                 </script>
                    
