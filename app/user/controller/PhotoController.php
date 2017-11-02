@@ -33,6 +33,10 @@ class PhotoController extends UserBaseController
             $upinfo = $file->validate(['size'=>60241024,'ext'=>'jpg,png,gif'])->move(ROOT_PATH . 'public/upload/image');
             if($upinfo){
                 $info['url']='image/'.$upinfo->getSaveName();//存储在Video 相对于upload的位置
+                $update['del']=time();
+                $iwhere['xid']=$info['xid'];
+                $iwhere['type']=$info['type'];
+                Db::name('Photo')->where($iwhere)->update($update);
                 $re['status']=Db::name('Photo')->insert($info);
             }else{
                 $re['status']=false;

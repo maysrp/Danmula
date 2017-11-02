@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{$user_login} - 我的合集</title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content="">
+    <include file="public@head"/>
+</head>
+
+<body class="body-white" id="top">
+<include file="public@nav"/>
+
+<div class="container tc-main">
+        <div class="row">
+            <div class="col-md-3">
+                <include file="public@usernav"/>
+            </div>
+            <div class="col-md-9">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>我的合集  </h4>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-hover">
+                            <tr>
+                                <th width='50%'>合集名称</th>
+                                <th width='25%'>创建时间</th>
+                                <th width='10%'>状态</th>
+                                <th width='15%'>操作</th>
+                            </tr>
+                            <volist name='list' id='vo'>
+                                <tr class="id_{$vo.cid}" title="{$vo.description}">
+                                    <td ><span class='glyphicon glyphicon-film' ></span> {$vo.name}</td>
+                                    <td >{:date('Y/m/d H:i',$vo.ctime)}</td>
+                                    <td >
+                                        <if condition=" $vo['checked'] gt 1 " >
+                                            <span class="label label-success" title="{:date('Y/m/d H:i',$vo['checked'])}">已审核</span>
+                                            
+                                        <elseif condition="$vo['checked'] eq 1"/>
+                                            <span class="label label-danger">未通过</span>
+                                        <else />
+                                            <span class="label label-primary">未审核</span>
+                                        </if>
+                                    </td>
+                                    <td >
+                                       <span class="glyphicon glyphicon-eye-open"></span> | <span class='glyphicon glyphicon-pencil text-primary'></span> | <span class="glyphicon glyphicon-trash text-danger" onclick='del_my({$vo.cid})'></span>
+                                    </td>
+                                </tr>
+                            </volist>
+                        </table>
+                        <div class="text-center">
+                            <div class="pagination">{$list->render()}</div>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                            <div class=" text-right"><span class="btn btn-success btn-sm " title="添加一个分类">添加 <span class="glyphicon glyphicon-plus"></span></span></div>
+                    </div>
+                </div>
+
+                <script>
+                    function del_my(id){
+                        var cf=confirm("是否要删除该弹幕？");
+                        if(cf){
+                            $.ajax({
+                                url:'{:url('collection/collection_delete')}?cid='+id,
+                                success:function(data){
+                                    if(data.status){
+                                        alert('删除成功!');
+                                        $(".id_"+id).remove();
+                                    }else{
+                                        alert('删除失败!');
+                                    }
+                                }
+                            })     
+                        }
+                    }
+                </script>
+                   
+            </div>
+        </div>
+        <include file="public@footer"/>
+</div>
+<include file="public@scripts"/>
+</body>
+</html>

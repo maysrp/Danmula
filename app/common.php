@@ -92,15 +92,22 @@
             return 'glyphicon glyphicon-question-sign';
         }
     }
-    function is_valid($xid,$type){//查看文件是否存在\
-        switch ($typs){
-            case 'video':
-                $where['del']=0;
-                $where['vid']=$vid;
-            break;
-            default:
+    // function is_valid($xid,$type){//查看文件是否存在\ 目前只能视频
+    //     switch ($typs){
+    //         case 'video':
+    //             $where['del']=0;
+    //             $where['vid']=$vid;
+    //             return Db::name('video')->where($where)->find();//true 为有 否则无
+    //             break;
+    //         default:
 
-            break;
-        }
-        return Db::name($type)->where($where)->find();
+    //         break;
+    //     }
+       
+    // }
+
+    function is_valid($vid){
+        $where['del']=0;
+        $where['vid']=$vid;
+        return Db::name('video')->where($where)->find();//true 为有 否则无
     }
