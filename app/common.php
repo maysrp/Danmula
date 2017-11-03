@@ -111,3 +111,37 @@
         $where['vid']=$vid;
         return Db::name('video')->where($where)->find();//true 为有 否则无
     }
+    function select_board_option(){
+        $where['del']=0;
+        $info=Db::name('board')->where($where)->select();
+        $xinfo=$info->toArray();
+        foreach($xinfo as $value){
+            echo "<option value='".$value['id']."'>".$value['name']."</option>";
+        }
+        
+    }
+    function select_board_option_old($id){
+        $where['del']=0;
+        $info=Db::name('board')->where($where)->select();
+        $xinfo=$info->toArray();
+        $video=Db::name('video')->find($id);
+        foreach($xinfo as $value){
+            if($value['id']==$video['board']){
+                echo "<option selected value='".$value['id']."'>".$value['name']."</option>";
+                
+            }else{
+                echo "<option value='".$value['id']."'>".$value['name']."</option>";
+                
+            }
+        }
+    }
+    function board($id){
+        $id=(int)$id;
+        $info=Db::name('board')->find($id);
+        if($info){
+            return $info['name'];
+        }else{
+            $info=Db::name('board')->find(1);
+            return $info['name'];
+        }
+    }

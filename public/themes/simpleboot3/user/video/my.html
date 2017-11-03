@@ -30,7 +30,11 @@
                             </tr>
                             <volist name='list' id='vo'>
                                 <tr class="vid_{$vo.vid}">
-                                    <td onclick="open_my({$vo.vid})"><span class='glyphicon glyphicon-film'></span> {$vo.name}</td>
+                                    <td onclick="open_my({$vo.vid})">
+                                        <span class="label label-info">{:board($vo.board)}</span>
+                                        <span class='glyphicon glyphicon-film'></span> 
+                                        {$vo.name}
+                                    </td>
                                     <td >{:date('Y-m-d',$vo.ctime)}</td>
                                     <td >
                                         <if condition=" $vo['checked'] gt 1 " >

@@ -53,6 +53,7 @@ class VideoModel extends Model{
 			$update['utime']=time();
 			$update['checked']=0;
 			$update['description']=$info['description'];
+			$update['board']=$info['board'];
 			return $this->update($update);
 		}else{
 			return false;
@@ -72,6 +73,7 @@ class VideoModel extends Model{
 		$insert['description']=$info['description'];
 		$insert['ctime']=time();
 		$insert['checked']=0;
+		$insert['board']=$info['board'];
 		return $this->insertGetId($insert);
 	}
 

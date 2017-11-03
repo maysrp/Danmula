@@ -50,6 +50,12 @@
                                         </div>
                                         <input type="number" name='vid' value="{$info['vid']}" class="hide">
                                         <input type='text' name='name' class="form-control up_input up_name" value="{$info['name']}"> 
+                                        <div class="input-group-addon">        
+                                                板块
+                                             </div>
+                                         <select name='board' class='form-control up_board'>
+                                             {:select_board_option_old($info['vid'])}
+                                         </select>
                                     </div>
                                 </div>
                                 <h4><b>描述:</b></h4>

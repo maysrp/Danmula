@@ -74,7 +74,7 @@ class VideoController extends UserBaseController
                 $info['name']=$this->request->post('name','unknow');
                 $info['description']=$this->request->post('description','unknow');
                 $info['uid']=cmf_get_current_user_id();
-                
+                $info['board']=$this->request->param('board',1,'intval');
                 
                 $Video=new VideoModel();
 
@@ -159,6 +159,7 @@ class VideoController extends UserBaseController
             $update['utime']=time();
             $update['name']=$post['name'];
             $update['description']=$post['description'];
+            $update['board']=$this->request->param('board',1,'intval');
             $update['checked']=0;
             if($Video->update($update)){
                 $this->redirect(url('video/index',['vid'=>$post['vid']]));
