@@ -43,7 +43,7 @@
                                         </if>
                                     </td>
                                     <td >
-                                       <span class="glyphicon glyphicon-eye-open" onclick='open_collection({$vo.cid})'></span> | <span class='glyphicon glyphicon-pencil text-primary'></span> | <span class="glyphicon glyphicon-trash text-danger" onclick='del_my({$vo.cid})'></span>
+                                       <span class="glyphicon glyphicon-eye-open" onclick='open_collection({$vo.cid})'></span> | <span class='glyphicon glyphicon-pencil text-primary' onclick='edit_collection({$vo.cid})'></span> | <span class="glyphicon glyphicon-trash text-danger" onclick='del_my({$vo.cid})'></span>
                                     </td>
                                 </tr>
                             </volist>
@@ -82,11 +82,37 @@
                                 var y='';
                                 for (info in data.data){
                                     x=x+' '+'<a href=\'{:url('video/index')}?vid='+data.data[info].vid+'\'>'+data.data[info].name+'</a>'; 
-                                    y=y+data.data[info].vid+' ';                                   
+                                    y=y+data.data[info].vid+' ';      
                                 }
                                 $(".collection_name").html(data.name+'合集');
+                                $(".cid").val(id);
                                 $(".collection_info").html(x);
-                                $(".collection_cid").html(y);
+                                $(".collection_cid").val(y);
+                                $(".show_one").modal('show');
+                            }
+                        })
+                    }
+                    function edit_collection(id){
+                        $.ajax({
+                            url:'{:url('collection/collection')}?cid='+id,
+                            success:function(data){
+                                var x='';
+                                var y='';
+                                for (info in data.data){
+                                    x=x+' '+'<a href=\'{:url('video/index')}?vid='+data.data[info].vid+'\'>'+data.data[info].name+'</a>'; 
+                                    y=y+data.data[info].vid+' ';      
+                                }
+                                $(".collection_name").html(data.name+'合集');
+                                $(".cid").val(id);
+                                $(".collection_info").html(x);
+                                $(".collection_cid").val(y);
+                                $(".collection_names").val(data.name);
+                                $(".collection_description").val(data.description);
+                                $(".collection_text").addClass('hide');
+                                $(".collection_form").removeClass('hide');
+                                
+                                $(".cnbtn").html("确认");
+                                $(".cnbtn").attr('onclick','change()');
                                 $(".show_one").modal('show');
                             }
                         })
@@ -101,7 +127,7 @@
 
 
 
-        <div class="modal fade show_one" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal fade show_one" tabindex="-1" role="dialog" >
             <div class="modal-dialog modal-sm" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -109,13 +135,26 @@
                     </div>
                     <div class="modal-body">
                         <div class="collection_info"></div>
+                        <div class="collection_form hide">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class='input-group-addon'>集合名称</span>
+                                    <input type="text" class='form-control collection_names'>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control collection_description"></textarea>
+                            </div>
+                            
+                        </div>
                         <div class="collection_text hide">
                             <h5>*请填入视频vid,每个vid间隔有一个空格</h5>
                             <textarea class="form-control collection_cid"></textarea>
+                            <input type='text' name='cid' class='hide cid'>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class='btn btn-primary' onclick='show_more()'>修改</button>
+                        <button class='btn btn-primary cnbtn' onclick='show_more()'>修改</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     </div>
                 </div>
@@ -125,8 +164,60 @@
         <script>    
             function show_more(){
                 $(".collection_text").removeClass('hide');
+                $(".cnbtn").attr("onclick",'change_it()');
+                $(".cnbtn").text("确认");
             }
-        
+            function change_it(){
+                var cid=$(".cid").val();
+                var info=$(".collection_cid").val();
+                $.ajax({
+                    url:'{:url('collection/collection_change')}',
+                    method:'post',
+                    data:{
+                        info:info,
+                        cid:cid
+                    },
+                    success:function(data){
+                        if(data.status){
+                            $(".show_one").modal('hide');                       
+                        }else{
+                            $(".show_one").modal('hide');                       
+                            
+                        }
+                    }
+                })
+            }
+            function change(){
+                var cid=$(".cid").val();
+                var name=$(".collection_names").val();
+                var description=$(".collection_description").val();
+
+                $.ajax({
+                    url:'{:url('collection/collection_change')}',
+                    method:'post',
+                    data:{
+                        name:name,
+                        cid:cid,
+                        description:description
+                    },
+                    success:function(data){
+                        if(data.status){
+                            $(".show_one").modal('hide');                       
+                        }else{
+                            $(".show_one").modal('hide');                       
+                            
+                        }
+                    }
+                })
+            }
+            $(".show_one").on('hidden.bs.modal', function (e) {
+                $(".collection_text").addClass('hide');
+                $(".collection_form").addClass('hide');
+                $(".cnbtn").attr("onclick",'show_more()');
+                $(".cnbtn").text("修改");
+                
+            })
+
         </script>
 
 

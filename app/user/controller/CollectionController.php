@@ -40,6 +40,7 @@ class CollectionController extends UserBaseController
         $one_info=[];
         $rim['cid']=$cid;
         $rim['name']=$rem['name'];
+        $rim['description']=$rem['description'];
         foreach ($info as $xinfo){
             if($ram=is_valid($xinfo)){//只有视频VID
                 $one_info['name']=$ram['name'];
@@ -117,6 +118,7 @@ class CollectionController extends UserBaseController
         }
         $update['utime']=time();
         $re['status']=Db::name('collection')->where($where)->update($update);
+        $re['con']=Db::name('collection')->where($where)->find();
         return json($re);
     }
 
