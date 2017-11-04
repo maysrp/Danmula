@@ -21,29 +21,31 @@ class IndexController extends HomeBaseController
         $Video=new VideoModel();
         $user = cmf_get_current_user();
         if($user){
-            $board=$this->board(1);
+            $board=$this->exboard(1);
         }else{
-            $board=$this->board(0);
+            $board=$this->exboard(0);
         }
         $rem=[];
         foreach($board as $bo){
             $where['del']=0;
             $where['board']=$bo['id'];
-            $xin=$Video->where($where)->order('checked desc')->select();//最新剧集
-            $ram['new']=$xin;
+            $xin=$Video->where($where)->order('checked desc')->limit(8)->select();//最新剧集
+            $ram['new']=$xin->toArray();
+            $ram['name']=board($bo['id']);
             $rem[]=$ram;
         }
-        $this->assign('info',$ram);
+        $this->assign('info',$rem);
 
         return $this->fetch(':index');
     }
-    protected function board($type=0){
+    protected function exboard($type=0){
         $Board=new boardModel();
         if(!$type){
             $where['is_login']=0;            
         }
         $where['del']=0;
-        return $Board->where($where)->order('sort')->select();
+        $info=$Board->where($where)->order('sort')->select();
+        return $info->toArray();
 
     }
 }

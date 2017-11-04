@@ -13,7 +13,26 @@
 <include file="public@nav"/>
 
 <div class="container">
-    
+        <volist name='info' id="vo">
+            <div class="container">
+                <h3>
+                    {$vo.name}
+                </h3>
+                <volist name='vo.new' id='xo'>
+                    <div class="col-md-3">
+                        <img src='{:photo_vid($xo.vid)}' width="50%">
+                        <hr>
+                        <h5><a href='{:vid_url($xo.vid)}'>{$xo.name}</a></h5>
+                        <div class="col-md-6">
+                            <span class="glyphicon glyphicon-play"></span>{:watch_vid($xo.vid)}
+                        </div>
+                        <div class="col-md-6">
+                            <span class="glyphicon glyphicon-comment"></span>{:danmu_vid($xo.vid)}
+                        </div>
+                    </div>
+                </volist>
+            </div>        
+        </volist>
     <include file="public@footer"/>
 </div>
 <!-- /container -->

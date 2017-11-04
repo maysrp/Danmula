@@ -50,6 +50,9 @@
             return '无该信息';
         } 
     }
+    function vid_url($vid){
+
+    }
     function hid_url($hid){
         $where['del']=0;
         $where['hid']=$hid;
@@ -171,9 +174,9 @@
             return 0;
         }
     }
-    function danmu_video($vid){
+    function danmu_vid($vid){
         $vid=(int)$vid;
         $where['del']=0;
         $where['player']=$vid;
-        return Db::name('watch')->where($where)->count();
+        return Db::name('danmu')->where($where)->count();
     }
