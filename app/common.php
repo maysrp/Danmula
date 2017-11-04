@@ -51,6 +51,17 @@
         } 
     }
     function vid_url($vid){
+        $vid=(int)$vid;
+        $info=Db::name('video')->find($vid);
+        if($info){
+            if($info['checked']>1 && !$info['del']){
+                return url('portal/video/index',['vid'=>$vid]);
+            }else{
+                return '';
+            }
+        }else{
+            return '';
+        }
 
     }
     function hid_url($hid){
