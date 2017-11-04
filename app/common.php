@@ -145,3 +145,35 @@
             return $info['name'];
         }
     }
+    function photo_vid($vid){
+        $vid=(int)$vid;
+        $where['type']='video';
+        $where['xid']=$vid;
+        $where['del']=0;
+        $info=Db::name('photo')->where($where)->find();
+        if($info){
+            $url=cmf_get_file_download_url($info['url'],3000);
+			return str_replace("\\","\/",$url);
+        }else{
+            return "";//默认url
+        }
+
+    }
+    function watch_vid($vid){
+        $vid=(int)$vid;
+        $where['type']='video';
+        $where['xid']=$vid;
+        $where['del']=0;
+        $info=Db::name('watch')->where($where)->find();
+        if($info){
+            return $info['count'];
+        }else{
+            return 0;
+        }
+    }
+    function danmu_video($vid){
+        $vid=(int)$vid;
+        $where['del']=0;
+        $where['player']=$vid;
+        return Db::name('watch')->where($where)->count();
+    }
