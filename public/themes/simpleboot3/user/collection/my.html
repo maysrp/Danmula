@@ -53,7 +53,7 @@
                         </div>
                     </div>
                     <div class="panel-footer">
-                            <div class=" text-right"><span class="btn btn-success btn-sm " title="添加一个分类">添加 <span class="glyphicon glyphicon-plus"></span></span></div>
+                            <div class=" text-right"><span class="btn btn-success btn-sm " title="添加一个合集" onclick="add_one()">添加 <span class="glyphicon glyphicon-plus"></span></span></div>
                     </div>
                 </div>
 
@@ -116,6 +116,13 @@
                                 $(".show_one").modal('show');
                             }
                         })
+                    }
+                    function add_one(){
+                        $(".collection_form").removeClass('hide');
+                        $(".collection_name").text('添加合集');
+                        $(".cnbtn").html("添加");
+                        $(".cnbtn").attr('onclick','add_it()');
+                        $(".show_one").modal('show');
                     }
                 </script>
                    
@@ -217,6 +224,26 @@
                 $(".cnbtn").text("修改");
                 
             })
+            function add_it(){
+                var name=$(".collection_names").val();
+                var description=$(".collection_description").val();
+                $.ajax({
+                    url:'{:url('collection/collection_create')}',
+                    method:'post',
+                    data:{
+                        name:name,
+                        description:description
+                    },
+                    success:function(data){
+                        if(data.status){
+                            $(".show_one").modal('hide');                       
+                        }else{
+                            $(".show_one").modal('hide');                       
+                            
+                        }
+                    }
+                })
+            }
 
         </script>
 

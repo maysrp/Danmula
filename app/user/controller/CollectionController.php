@@ -41,13 +41,16 @@ class CollectionController extends UserBaseController
         $rim['cid']=$cid;
         $rim['name']=$rem['name'];
         $rim['description']=$rem['description'];
-        foreach ($info as $xinfo){
-            if($ram=is_valid($xinfo)){//只有视频VID
-                $one_info['name']=$ram['name'];
-                $one_info['vid']=$xinfo;
-                $rim['data'][]=$one_info;
+        if($info){
+            foreach ($info as $xinfo){
+                if($ram=is_valid($xinfo)){//只有视频VID
+                    $one_info['name']=$ram['name'];
+                    $one_info['vid']=$xinfo;
+                    $rim['data'][]=$one_info;
+                }
             }
         }
+        
         return json($rim);
     }
     public function collection_create(){
@@ -96,7 +99,7 @@ class CollectionController extends UserBaseController
         $info=$this->request->param('info');
         $where['cid']=$this->request->param('cid','0','intval');
         $where['uid']=$user['id'];
-        if($info){
+        // if($info){
             $tag=preg_replace('/\s+/', ' ', $info);
             $ram=explode(" ", $tag);
             $Video=new VideoModel();
@@ -109,7 +112,7 @@ class CollectionController extends UserBaseController
             $rem=array_unique($rem);
             $update['count']=count($rem);
             $update['info']=json_encode($rem);//应该为本人所有
-        }
+        // }
         if($name=$this->request->param('name')){
             $update['name']=$name;
         }
