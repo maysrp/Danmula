@@ -13,39 +13,36 @@
 	<div class="row">
 		<div class="col-md-9">
 			<div class="main-title">
-				<h3>'{$keyword}' 搜索结果 </h3>
+				<h3>'{$info.keyword}' 搜索结果{$list->total()}条 </h3>
 			</div>
-			<php>
-				$where=[
-				'post.create_time'=>['egt',0],
-				'post.post_title'=>['like',"%$keyword%"]
-				];
-			</php>
-
-			<portal:articles item="vo" where="$where" order="post.create_time DESC" page="10">
-
-				<div class="list-boxes">
-					<h2><a href="{:cmf_url('portal/Article/index',array('id'=>$vo['id']))}">{$vo.post_title}</a>
-					</h2>
-					<p>{$vo.post_excerpt}</p>
-					<div>
-						<div class="pull-left">
-							<div class="list-actions">
-								<a href="javascript:;"><i class="fa fa-eye"></i><span>{$vo.post_hits}</span></a>
-								<a href="{:cmf_url('portal/Article/doLike',array('id'=>$vo['id']))}"
-								   class="js-count-btn"><i class="fa fa-thumbs-up"></i><span class="count">{$vo.post_like}</span></a>
-
-									<i class="fa fa-star-o"></i>
-								</a>
+			<div class="text-center">
+					<form>
+							<input type="text" name='keyword'>
+							{:search_nav($info.board)}
+						<button>xxxxxx</button>
+					</form>
+			</div>
+			<div class="row">
+				<volist name='list' id='xo'>
+						<div class="col-md-3">
+								<img src='{:photo_vid($xo.vid)}' width="50%">
+								<hr>
+								<h5><a href='{:vid_url($xo.vid)}'>{$xo.name}</a></h5>
+								<div class="col-md-6">
+									<span class="glyphicon glyphicon-play"></span>{:watch_vid($xo.vid)}
+								</div>
+								<div class="col-md-6">
+									<span class="glyphicon glyphicon-comment"></span>{:danmu_vid($xo.vid)}
+								</div>
 							</div>
-						</div>
-						<a class="btn btn-warning btn-sm pull-right"
-						   href="{:cmf_url('portal/Article/index',array('id'=>$vo['id']))}">查看更多</a>
-					</div>
-				</div>
-			</portal:articles>
+				</volist>
+				
+			</div>
+	
+
+			
 			<div class="pagination">
-				<page/>
+					<div class="pagination">{$list->render()}</div>
 			</div>
 
 		</div>

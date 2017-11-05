@@ -191,3 +191,19 @@
         $where['player']=$vid;
         return Db::name('danmu')->where($where)->count();
     }
+    function search_nav($ar){
+        $ar=is_array($ar)?$ar:[1];
+        $where['del']=0;
+        $info=Db::name('board')->where($where)->select();
+        $xinfo=$info->toArray();//全部大板块
+
+        foreach($xinfo as $value){
+            if(in_array($value['id'],$ar)){
+                 echo "<label class='checkbox-inline'><input type='checkbox' name='board[]' checked value='".$value['id']."' >".$value['name']."</label>";
+                
+            }else{
+                echo "<label class='checkbox-inline'><input type='checkbox' name='board[]' value='".$value['id']."'>".$value['name']."</label>";
+                
+            }
+        }
+    }

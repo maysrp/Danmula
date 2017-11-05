@@ -11,18 +11,31 @@
 namespace app\portal\controller;
 
 use cmf\controller\HomeBaseController;
+use think\Db;
 
 class SearchController extends HomeBaseController
 {
     public function index()
     {
         $keyword = $this->request->param('keyword');
-
         if (empty($keyword)) {
             $this -> error("关键词不能为空！请重新输入！");
         }
+        $get=$this->request->get();
+        $board=isset($get['board'])?$get['board']:[1];
 
-        $this -> assign("keyword", $keyword);
+
+        $where['board']=['in',$board];
+        $where['name']=['like','%'.$keyword.'%'];
+        $where['checked']=['>',1];
+        $where['del']=0;
+
+        
+        $list=Db::name('video')->where($where)->paginate(10);
+        $this->assign('list',$list);
+        $info['board']=$board;
+        $info['keyword']=$keyword;
+        $this->assign('info',$info);
         return $this->fetch('/search');
     }
 }
