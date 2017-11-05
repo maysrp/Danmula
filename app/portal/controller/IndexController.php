@@ -29,7 +29,8 @@ class IndexController extends HomeBaseController
         foreach($board as $bo){
             $where['del']=0;
             $where['board']=$bo['id'];
-            $xin=$Video->where($where)->order('checked desc')->limit(8)->select();//最新剧集
+            $where['checked']=['>',1];
+            $xin=$Video->where($where)->order('ctime desc')->limit(8)->select();//最新剧集
             $ram['new']=$xin->toArray();
             $ram['name']=board($bo['id']);
             $ram['board']=$bo['id'];

@@ -26,8 +26,9 @@ class VideoModel extends Model{
 	public function vid($vid){
 		$where['vid']=$vid;
 		$where['del']=0;
+		$user = cmf_get_current_user();		
 		$info=$this->where($where)->find();
-		if($info){
+		if($info['checked']>1||$info['uid']==$user['id']){
 			return $info->data;//可能是 $info['data'];
 		}else{
 			return false;

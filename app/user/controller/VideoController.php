@@ -160,7 +160,8 @@ class VideoController extends UserBaseController
             $update['name']=$post['name'];
             $update['description']=$post['description'];
             $update['board']=$this->request->param('board',1,'intval');
-            $update['checked']=0;
+            $update['checked']=2;
+            // $update['checked']=0;先不审核
             if($Video->update($update)){
                 $this->redirect(url('video/index',['vid'=>$post['vid']]));
             }else{

@@ -55,7 +55,7 @@ class VideoController extends HomeBaseController
             }
         	return $this->fetch('play');
         }else{
-        	return $this->fetch('error');
+        	return $this->error('无该视频');
         }
 
     }
