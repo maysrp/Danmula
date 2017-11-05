@@ -1,5 +1,6 @@
 <?php
     use think\Db;
+    use app\user\model\PhotoModel;
     function test(){
         echo 'hi';
     }
@@ -161,16 +162,19 @@
     }
     function photo_vid($vid){
         $vid=(int)$vid;
+        $Photo=new PhotoModel();
         $where['type']='video';
         $where['xid']=$vid;
-        $where['del']=0;
-        $info=Db::name('photo')->where($where)->find();
-        if($info){
-            $url=cmf_get_file_download_url($info['url'],3000);
-			return str_replace("\\","\/",$url);
-        }else{
-            return "";//默认url
-        }
+        return $Photo->photo_get($where);
+        
+        // $where['del']=0;
+        // $info=Db::name('photo')->where($where)->find();
+        // if($info){
+        //     $url=cmf_get_file_download_url($info['url'],3000);
+		// 	return str_replace("\\","\/",$url);
+        // }else{
+        //     return "";//默认url
+        // }
 
     }
     function watch_vid($vid){
@@ -178,9 +182,9 @@
         $where['type']='video';
         $where['xid']=$vid;
         $where['del']=0;
-        $info=Db::name('watch')->where($where)->find();
+        $info=Db::name('watch')->where($where)->count();
         if($info){
-            return $info['count'];
+            return $info;
         }else{
             return 0;
         }
@@ -191,9 +195,19 @@
         $where['player']=$vid;
         return Db::name('danmu')->where($where)->count();
     }
+    function harvest_vid($vid){
+        $vid=(int)$vid;
+        $where['type']='video';
+        $where['xid']=$vid;
+        $where['del']=0;
+        return Db::name('harvest')->where($where)->count();
+    }
     function search_nav($ar){
         $ar=is_array($ar)?$ar:[1];
         $where['del']=0;
+        if(!cmf_get_current_user()){
+            $where['is_login']=0;
+        }
         $info=Db::name('board')->where($where)->select();
         $xinfo=$info->toArray();//全部大板块
 
@@ -207,3 +221,10 @@
             }
         }
     }
+    function webinfo(){
+        $where['del']=0;
+        $where['checked']=['>',1];
+        $list=Db::name('video')->where($where)->order('ctime desc')->limit(10)->select();
+        return $list->toArray();
+    }
+    

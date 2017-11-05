@@ -51,7 +51,8 @@ class VideoModel extends Model{
 			$update['vid']=$oinfo['vid'];
 			$update['name']=$info['name'];
 			$update['utime']=time();
-			$update['checked']=0;
+			// $update['checked']=0;
+			$update['checked']=2;
 			$update['description']=$info['description'];
 			$update['board']=$info['board'];
 			return $this->update($update);
@@ -72,7 +73,8 @@ class VideoModel extends Model{
 		$insert['uid']=$info['uid'];
 		$insert['description']=$info['description'];
 		$insert['ctime']=time();
-		$insert['checked']=0;
+		$insert['checked']=2;
+		// $insert['checked']=0;
 		$insert['board']=$info['board'];
 		return $this->insertGetId($insert);
 	}

@@ -23,8 +23,8 @@ class VideoController extends HomeBaseController
 {
     public function index()
     {
+        $user = cmf_get_current_user();
         $vid = $this->request->param('vid', 1, 'intval');
-        
         $Video=new VideoModel();
         $Harvest=new HarvestModel();
         $Good=new GoodModel();
@@ -46,7 +46,13 @@ class VideoController extends HomeBaseController
             $info['video']=str_replace('\\','\/',$info['video']);
     
 
-        	$this->assign('info',$info);
+            $this->assign('info',$info);
+            if($user){
+                $wo['uid']=$user['id'];
+                $wo['xid']=$vid;
+                $wo['type']='video';
+                $Watch->watch($wo);
+            }
         	return $this->fetch('play');
         }else{
         	return $this->fetch('error');

@@ -32,6 +32,7 @@ class IndexController extends HomeBaseController
             $xin=$Video->where($where)->order('checked desc')->limit(8)->select();//最新剧集
             $ram['new']=$xin->toArray();
             $ram['name']=board($bo['id']);
+            $ram['board']=$bo['id'];
             $rem[]=$ram;
         }
         $this->assign('info',$rem);

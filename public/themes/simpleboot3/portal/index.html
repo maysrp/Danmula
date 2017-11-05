@@ -13,21 +13,24 @@
 <include file="public@nav"/>
 
 <div class="container">
+  
         <volist name='info' id="vo">
-            <div class="container">
-                <h3>
+            <div class="container {$vo.board}">
+                <h3 id='board_{$vo.board}'>
                     {$vo.name}
                 </h3>
                 <volist name='vo.new' id='xo'>
                     <div class="col-md-3">
-                        <img src='{:photo_vid($xo.vid)}' width="50%">
-                        <hr>
-                        <h5><a href='{:vid_url($xo.vid)}'>{$xo.name}</a></h5>
-                        <div class="col-md-6">
-                            <span class="glyphicon glyphicon-play"></span>{:watch_vid($xo.vid)}
-                        </div>
-                        <div class="col-md-6">
-                            <span class="glyphicon glyphicon-comment"></span>{:danmu_vid($xo.vid)}
+                        <img src='{:photo_vid($xo.vid)}' width="200px" height="150px" class="center-block">
+                        
+                        <h5 class="text-center"><a href='{:vid_url($xo.vid)}'>{$xo.name}</a></h5>
+                        <div class="text-center">
+                            <div class="col-md-6">
+                                <span class="glyphicon glyphicon-play"></span>{:watch_vid($xo.vid)}
+                            </div>
+                            <div class="col-md-6">
+                                <span class="glyphicon glyphicon-comment"></span>{:danmu_vid($xo.vid)}
+                            </div>
                         </div>
                     </div>
                 </volist>
@@ -35,6 +38,19 @@
         </volist>
     <include file="public@footer"/>
 </div>
+
+<div style="position:absolute;right:50px;top:200px;">
+    <ul class="list-group">
+        <volist name='info' id='oe'>
+                <li class="list-group-item {$oe.board}"><a href=#board_{$oe.board}>{$oe.name}</a></li>
+        </volist>
+       
+    </ul>
+    
+    
+</div>
+
+
 <!-- /container -->
 <include file="public@scripts"/>
 <script src="__TMPL__/public/assets/js/slippry.min.js"></script>

@@ -12,9 +12,7 @@
 <div class="container tc-main">
 	<div class="row">
 		<div class="col-md-9">
-			<div class="main-title">
-				<h3>'{$info.keyword}' 搜索结果{$list->total()}条 </h3>
-			</div>
+			
 			<div class="text-center">
 					<form>
 							<input type="text" name='keyword'>
@@ -22,6 +20,9 @@
 						<button>xxxxxx</button>
 					</form>
 			</div>
+			<div class="main-title">
+					<h3>'{$info.keyword}' 搜索结果{$list->total()}条 </h3>
+				</div>
 			<div class="row">
 				<volist name='list' id='xo'>
 						<div class="col-md-3">
