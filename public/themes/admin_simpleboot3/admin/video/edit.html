@@ -1,23 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{$user_login} - 编辑视频</title>
-    <meta name="keywords" content=""/>
-    <meta name="description" content="">
-    <include file="public@head"/>
+<include file="public@header" />
 </head>
-
-<body class="body-white" id="top">
-<include file="public@nav"/>
-
-<div class="container tc-main">
-        <div class="row">
-            <div class="col-md-3">
-                <include file="public@usernav"/>
-            </div>
-            <div class="col-md-9">
-                
-                <div class="panel panel-default">
+<body>
+	<div class="wrap">
+            <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3>
                             {$info['name']}
@@ -167,6 +152,14 @@
                                 })
 
                             })
+                           
+                            function reset(){
+                                window.location.href='{:url('video/video',['vid'=>$info['vid']])}';
+                            }
+                            function update(){
+                                $(".update").click();
+                            }
+               
                         </script>
                         
 
@@ -180,22 +173,8 @@
                         <button class="btn btn-success" onclick="update()">提交</button>
                     </div>
                 </div>
-                
-                <!-- 这里填写内容	 -->
-				<script>
-                    function reset(){
-                        window.location.href='{:url('video/index',['vid'=>$info['vid']])}';
-                    }
-                    function update(){
-                        $(".update").click();
-                    }
-                </script>
 
-			
-            </div>
-        </div>
-        <include file="public@footer"/>
-</div>
-<include file="public@scripts"/>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
 </body>
 </html>

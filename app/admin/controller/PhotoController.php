@@ -21,16 +21,15 @@ use cmf\controller\UserBaseController;
  * Class Ueditor
  * @package app\asset\controller
  */
-class PhotoController extends UserBaseController
+class PhotoController extends AdminBaseController
 {
     public function upload(){
         $file=$this->request->file('image');
         $info['xid']=$this->request->param('xid',0,'intval');
         $info['type']=$this->request->param('type','video');
         $user = cmf_get_current_user();
-        $source=Db::name('video')->find($info['xid']);
         $info['uid']=$user['id'];
-        if($file&&$user['id']==$source['uid']){
+        if($file&&$user['id']){
             $upinfo = $file->validate(['size'=>60241024,'ext'=>'jpg,png,gif'])->move(ROOT_PATH . 'public/upload/image');
             if($upinfo){
                 $info['url']='image/'.$upinfo->getSaveName();//存储在Video 相对于upload的位置
