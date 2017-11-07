@@ -79,6 +79,7 @@ class VideoController extends UserBaseController
                 $Video=new VideoModel();
 
                 if($xinfo=$Video->upload($info)){
+                    point_upload_video($info['uid']);
                     $re['status']=1;
                     $re['con']=$xinfo;
                 }else{
@@ -109,6 +110,7 @@ class VideoController extends UserBaseController
         $vid=$this->request->param('vid',0,'intval');
         $Video=new VideoModel();
         if($Video->del_my($vid,$uid)){
+            point_delete_video($uid);
             $re['status']=true;
         }else{
             $re['status']=false;
@@ -160,8 +162,8 @@ class VideoController extends UserBaseController
             $update['name']=$post['name'];
             $update['description']=$post['description'];
             $update['board']=$this->request->param('board',1,'intval');
-            $update['checked']=2;
-            // $update['checked']=0;先不审核
+            // $update['checked']=2; //审核后修改不变
+            // $update['checked']=0;//先不审核
             if($Video->update($update)){
                 $this->redirect(url('video/index',['vid'=>$post['vid']]));
             }else{

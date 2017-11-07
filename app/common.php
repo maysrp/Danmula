@@ -1,6 +1,8 @@
 <?php
     use think\Db;
     use app\user\model\PhotoModel;
+    use app\user\model\PointModel;
+
     function test(){
         echo 'hi';
     }
@@ -226,5 +228,31 @@
         $where['checked']=['>',1];
         $list=Db::name('video')->where($where)->order('ctime desc')->limit(10)->select();
         return $list->toArray();
+    }
+    function point_upload_video($uid){
+        $Point=new PointModel();
+        $info['uid']=$uid;
+        $info['am']=1;
+        $info['action']=5;//添加的分数 上传
+        return $Point->point_action($info);
+    }
+    function point_delete_video($uid){
+        $Point=new PointModel();
+        $info['uid']=$uid;
+        $info['am']=0;
+        $info['action']=5;//删除 减分数
+        return $Point->point_action($info);
+    }
+    function point_my($uid){
+        $Point=new PointModel();
+        $num=$Point->point_now($uid);
+        return $num?$num['point']:0;   
+    }
+    function point_checked($uid){
+        $Point=new PointModel();
+        $info['uid']=$uid;
+        $info['am']=1;
+        $info['action']=10;//添加的分数 审核成功
+        return $Point->point_action($info);
     }
     

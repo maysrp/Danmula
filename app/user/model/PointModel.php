@@ -4,13 +4,13 @@ namespace app\user\model;
 
 use think\Model;
 
-class PhotoModel extends Model{
+class PointModel extends Model{
     public function point_now($uid){
         $where['uid']=$uid;
         $where['del']=0;
         $info=$this->where($where)->order('time desc')->find();
         if($info){
-            return $indo->data;    
+            return $info->data;    
         }else{
             return false;
         }
@@ -24,7 +24,7 @@ class PhotoModel extends Model{
     }
     public function point_action($info){
         $insert['uid']=$info['uid'];
-        $now=$this->point_now($add);
+        $now=$this->point_now($info['uid']);
         if($now){
             if($info['am']){
                 $insert['point']=$now['point']+$info['action'];
@@ -34,6 +34,16 @@ class PhotoModel extends Model{
                 $insert['am']=0;            
             }
             $insert['time']=time();
+            $insert['action']=$info['action'];
+            return $this->insert($insert);
+        }else{
+            $inser['uid']=$info['uid'];
+            $insert['am']=$info['am'];
+            if($insert['am']){
+                $insert['point']=$info['action'];
+            }else{
+                $insert['point']=0;
+            }
             $insert['action']=$info['action'];
             return $this->insert($insert);
         }

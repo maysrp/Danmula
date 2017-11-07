@@ -3,21 +3,24 @@
 </php>
 <div class="">
     <h3>最新视频</h3>
-    <div class="list-group">
+    <ul class="media-list">
         <volist name='webinfo' id='vo' key='id'>
-            <a href="{:vid_url($vo.vid)}">
-                <p class="list-group-item-text">
-                    <in name='id' value='1,2,3'>
-                        <div><img src='{:photo_vid($vo.vid)}' width="200px" height="150px" class=""></div>
-                    </in>
-                </p>
-                <h4 class="list-group-item-heading ">{$vo.name}</h4>
-                
-                <p class="list-group-item-text ">
-                <span class="glyphicon glyphicon-play"></span> {:watch_vid($vo.vid)} | <span class="glyphicon glyphicon-comment"></span> {:danmu_vid($vo.vid)} | <span class="glyphicon glyphicon-heart"></span> {:harvest_vid($vo.vid)}
-                </p>
-                
-            </a>
+            <li class="media">
+                <a href="{:vid_url($vo.vid)}">
+                    <div class="media-left">
+                        <in name='id' value='1,2,3'>
+                            <div><img src='{:photo_vid($vo.vid)}' width="80px" height="50px" class=""></div>
+                        </in>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading ">{$vo.name}</h4>
+                        
+                        
+                        <span class="glyphicon glyphicon-play"></span> {:watch_vid($vo.vid)} | <span class="glyphicon glyphicon-comment"></span> {:danmu_vid($vo.vid)} | <span class="glyphicon glyphicon-heart"></span> {:harvest_vid($vo.vid)}
+                        
+                    </div>
+                </a>
+            </li>
         </volist>
-    </div>
+    </ul>
 </div>

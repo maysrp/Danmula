@@ -15,25 +15,25 @@
 <div class="container">
   
         <volist name='info' id="vo">
-            <div class="container {$vo.board}">
+            <div class="row {$vo.board}">
                 <h3 id='board_{$vo.board}'>
                     {$vo.name}
                 </h3>
                 <volist name='vo.new' id='xo'>
                     <div class="col-md-3">
-                        <img src='{:photo_vid($xo.vid)}' width="200px" height="150px" class="center-block">
-                        
-                        <h5 class="text-center"><a href='{:vid_url($xo.vid)}'>{$xo.name}</a></h5>
-                        <div class="text-center">
-                            <div class="col-md-6">
-                                <span class="glyphicon glyphicon-play"></span>{:watch_vid($xo.vid)}
-                            </div>
-                            <div class="col-md-6">
-                                <span class="glyphicon glyphicon-comment"></span>{:danmu_vid($xo.vid)}
-                            </div>
+                        <img src='{:photo_vid($xo.vid)}' width="200px" height="150px" class="center-block img-rouded">
+                        <div class="row text-center">
+                                <h5 class="">
+                                    <a href='{:vid_url($xo.vid)}'>{$xo.name}</a> |
+                                    <span class="glyphicon glyphicon-play"></span>{:watch_vid($xo.vid)}
+                                    <span class="glyphicon glyphicon-comment"></span>{:danmu_vid($xo.vid)}
+                                </h5>
                         </div>
                     </div>
                 </volist>
+                <div class="container">
+                    <h4 class="text-right">查看更多>>></h4>
+                </div>
             </div>        
         </volist>
     <include file="public@footer"/>

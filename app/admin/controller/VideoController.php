@@ -142,6 +142,10 @@ class VideoController extends  AdminBaseController
             $update['checked']=0;
         }
         $re['status']=Db::name('video')->where($where)->update($update);
+        if($re['status']&&$update['checked']>1){
+            $dat=Db::name('video')->where($where)->find();
+            point_checked($dat['uid']);
+        }
         return json($re);
     }
 }
