@@ -255,4 +255,7 @@
         $info['action']=10;//添加的分数 审核成功
         return $Point->point_action($info);
     }
-    
+    function board_url($bid){
+        $bid=$bid?(int)$bid:1;//默认板块
+        return url('portal/index/board',['board'=>$bid]);
+    }

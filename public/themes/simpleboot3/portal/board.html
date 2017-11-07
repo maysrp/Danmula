@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>首页 {$site_info.site_name|default=''}</title>
+    <meta name="keywords" content="{$site_info.site_seo_keywords|default=''}"/>
+    <meta name="description" content="{$site_info.site_seo_description|default=''}">
+    <include file="public@head"/>
+    <link href="__TMPL__/public/assets/css/slippry/slippry.css" rel="stylesheet">
+    
+    <hook name="before_head_end"/>
+</head>
+<body class="body-white">
+    <include file="public@nav"/>
+    <div class="container">
+
+        <h2>板块 <small>{$board.name}</small></h2>
+        <table class="table table-hover">
+                <tr>
+                    <th width='60%'>视频名称</th>
+                    <th width='15%'>上传日期</th>
+                   
+                    <th width='15%'>播放</th>
+                </tr>
+                <volist name='list' id='vo'>
+                    <tr class="vid_{$vo.vid}">
+                        <td onclick="open_my({$vo.vid})">
+                            <span class='glyphicon glyphicon-film'></span> 
+                            {$vo.name}
+                        </td>
+                        <td >{:date('Y-m-d',$vo.ctime)}</td>
+                        <td >
+                            <a href='{:url('portal/video/index',['vid'=>$vo.vid])}'><span class='glyphicon glyphicon-play text-info' title='播放'></span></a>
+                        </td>
+                    </tr>
+                </volist>
+            </table>
+            <div class="text-center">
+                <div class="pagination">{$list->render()}</div>
+            </div>
+        <include file="public@footer"/>
+    </div>
+    
+
+
+
+    <!-- /container -->
+    <include file="public@scripts"/>
+    <script src="__TMPL__/public/assets/js/slippry.min.js"></script>
+
+    <hook name="before_body_end"/>
+</body>
+</html>
+    

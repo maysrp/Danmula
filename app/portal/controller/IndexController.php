@@ -13,6 +13,7 @@ namespace app\portal\controller;
 use cmf\controller\HomeBaseController;
 use app\user\model\VideoModel;
 use app\user\model\BoardModel;
+use think\Db;
 
 class IndexController extends HomeBaseController
 {
@@ -49,5 +50,30 @@ class IndexController extends HomeBaseController
         $info=$Board->where($where)->order('sort')->select();
         return $info->toArray();
 
+    }
+    public function board(){
+        $user = cmf_get_current_user();
+        $where['board']=$this->request->param('board',1,'intval');
+
+        $whereb['id']=$where['board'];
+        $whereb['del']=0;
+        if(!$user){
+            $whereb['is_login']=0;
+        }
+        $cv=Db::name('board')->where($whereb)->find();
+        if($cv){
+            
+            $where['del']=0;
+            $list=Db::name('video')->where($where)->paginate(20);
+            $this->assign('list',$list);
+            $this->assign('board',$cv);
+            return $this->fetch(':board');
+
+        }else{
+            $this->error('不存在该模板');
+        }
+
+        
+        
     }
 }
