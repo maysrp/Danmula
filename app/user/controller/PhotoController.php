@@ -11,6 +11,7 @@
 namespace app\user\controller;
 
 use think\Db;
+use think\Image;
 use app\user\model\PhotoModel;
 
 use cmf\controller\UserBaseController;
