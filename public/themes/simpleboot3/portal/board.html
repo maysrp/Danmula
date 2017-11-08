@@ -15,21 +15,26 @@
 
         <h2>板块 <small>{$board.name}</small></h2>
         <table class="table table-hover">
-                <tr>
-                    <th width='60%'>视频名称</th>
+                <tr >
+                    <th width='40%'>视频名称</th>
+                    <th width='30%'></th>
                     <th width='15%'>上传日期</th>
                    
                     <th width='15%'>播放</th>
                 </tr>
                 <volist name='list' id='vo'>
-                    <tr class="vid_{$vo.vid}">
-                        <td onclick="open_my({$vo.vid})">
+                    <tr class="vid_{$vo.vid} board_one">
+                        <td>
                             <span class='glyphicon glyphicon-film'></span> 
                             {$vo.name}
+                            
+                        </td>
+                        <td>
+                                <span class="show_image hide"><img src='{:photo_vid($vo.vid)}' width="200px" height="140px"/></span>
                         </td>
                         <td >{:date('Y-m-d',$vo.ctime)}</td>
                         <td >
-                            <a href='{:url('portal/video/index',['vid'=>$vo.vid])}'><span class='glyphicon glyphicon-play text-info' title='播放'></span></a>
+                            <a href='{:url('portal/video/index',['vid'=>$vo.vid])}'><span class='glyphicon glyphicon-play text-info' title='播放'></span></a> {$vo.watch}
                         </td>
                     </tr>
                 </volist>
@@ -40,7 +45,14 @@
         <include file="public@footer"/>
     </div>
     
-
+    <script>
+        $(".board_one").mouseover(function(){
+           $(this).find('td:eq(1) span').removeClass('hide');
+        })
+        $(".board_one").mouseleave(function(){
+           $(this).find('td:eq(1) span').addClass('hide');
+        })
+    </script>
 
 
     <!-- /container -->
