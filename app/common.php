@@ -229,6 +229,13 @@
         $list=Db::name('video')->where($where)->order('ctime desc')->limit(10)->select();
         return $list->toArray();
     }
+    function webhot($time=604800){
+        $where['del']=0;
+        $where['checked']=['>',1];
+        $where['ctime']=['>',time()-604800];
+        $list=Db::name('video')->where($where)->order('watch desc')->limit(10)->select();
+        return $list->toArray();
+    }
     function point_upload_video($uid){
         $Point=new PointModel();
         $info['uid']=$uid;

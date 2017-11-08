@@ -1,8 +1,12 @@
 <php>
     $webinfo=webinfo();
+    $webhot=webhot();
 </php>
-<div class="">
-    <h3>最新视频</h3>
+<h3>
+    <span class="new">最新视频</span>
+    <span class="hot"><small>热门视频</small></span>
+</h3>
+<div class="webnew">
     <ul class="media-list">
         <volist name='webinfo' id='vo' key='id'>
             <li class="media">
@@ -24,3 +28,41 @@
         </volist>
     </ul>
 </div>
+
+<div class="webhot hide">
+        <ul class="media-list">
+            <volist name='webhot' id='vo' key='id'>
+                <li class="media">
+                    <a href="{:vid_url($vo.vid)}">
+                        <div class="media-left">
+                            <in name='id' value='1,2,3'>
+                                <div><img src='{:photo_vid($vo.vid)}' width="80px" height="50px" class=""></div>
+                            </in>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading ">{$vo.name}</h4>
+                            
+                            
+                            <span class="glyphicon glyphicon-play"></span> {:watch_vid($vo.vid)} | <span class="glyphicon glyphicon-comment"></span> {:danmu_vid($vo.vid)} | <span class="glyphicon glyphicon-heart"></span> {:harvest_vid($vo.vid)}
+                            
+                        </div>
+                    </a>
+                </li>
+            </volist>
+        </ul>
+    </div>
+    <script>
+        $(".new").click(function(){
+            $(".webhot").addClass('hide');
+            $(".webnew").removeClass('hide');
+            $(".hot").html('<small>热门视频</small>');
+            $(".new").html('最新视频');
+        })
+        $(".hot").click(function(){
+            $(".webnew").addClass('hide');
+            $(".webhot").removeClass('hide');
+            $(".new").html('<small>最新视频</small>');
+            $(".hot").html('热门视频');
+            
+        })
+    </script>

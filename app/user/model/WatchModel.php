@@ -3,6 +3,7 @@
 namespace app\user\model;
 
 use think\Model;
+use think\Db;
 
 class WatchModel extends Model{
 	public function watch_count($info){
@@ -16,6 +17,15 @@ class WatchModel extends Model{
 		$insert['type']=$info['type'];
 		$insert['xid']=$info['xid'];
 		$insert['time']=time();
+		switch ($info['type']){
+			case 'video':
+				$where['vid']=$info['xid'];
+				$where['del']=0;
+				Db::name('video')->where($where)->setInc('watch');
+				break;
+			default:
+				break;
+		}
 		return $this->insert($insert);
 	}
 	public function how_much($info){

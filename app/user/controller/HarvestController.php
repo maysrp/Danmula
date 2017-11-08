@@ -70,11 +70,20 @@ class HarvestController extends UserBaseController{
                             $Harvest->where($insert)->update($update);
                             $re['status']=2;
                             $re['con']="已经删除收藏";
+                            
+                            $vw['vid']=$get['xid'];
+                            $vw['del']=0;
+
+                            Db::name('video')->where($vw)->setDec('harvest');
                             return json($re);
                         }else{
+                            $vw['vid']=$get['xid'];
+                            $vw['del']=0;
+                            
                             $insert['name']=isset($get['name'])?$get['name']:'';
                             $insert['time']=time();
                             $re['status']=$Harvest->insert($insert);
+                            Db::name('video')->where($vw)->setInc('harvest');
                             return json($re);
                         }
                        
